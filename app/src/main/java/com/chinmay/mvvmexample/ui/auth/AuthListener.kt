@@ -1,6 +1,6 @@
 package com.chinmay.mvvmexample.ui.auth
 
-import androidx.lifecycle.LiveData
+import com.chinmay.mvvmexample.data.db.entities.User
 
 /**
  * Created by grandolf49 on 01-05-2020
@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData
 interface AuthListener {
     fun onStarted()
 
-    fun onSuccess(loginResponse: LiveData<String>)
+    fun onSuccess(loginResponse: User)
 
     fun onFailure(message: String)
 }
