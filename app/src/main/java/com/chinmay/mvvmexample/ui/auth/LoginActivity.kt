@@ -3,14 +3,13 @@ package com.chinmay.mvvmexample.ui.auth
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.chinmay.mvvmexample.R
 import com.chinmay.mvvmexample.data.db.entities.User
 import com.chinmay.mvvmexample.databinding.ActivityLoginBinding
 import com.chinmay.mvvmexample.util.hide
 import com.chinmay.mvvmexample.util.show
-import com.chinmay.mvvmexample.util.toast
+import com.chinmay.mvvmexample.util.snackbar
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity(), AuthListener {
@@ -32,11 +31,12 @@ class LoginActivity : AppCompatActivity(), AuthListener {
 
     override fun onSuccess(user: User) {
         progress_bar.hide()
-        toast("${user.name} is Logged in!")
+
+        root_layout.snackbar("${user.name} is Logged in!")
     }
 
     override fun onFailure(message: String) {
         progress_bar.hide()
-        toast(message)
+        root_layout.snackbar(message)
     }
 }

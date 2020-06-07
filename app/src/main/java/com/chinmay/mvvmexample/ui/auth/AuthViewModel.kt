@@ -3,6 +3,7 @@ package com.chinmay.mvvmexample.ui.auth
 import android.view.View
 import androidx.lifecycle.ViewModel
 import com.chinmay.mvvmexample.data.repositories.UserRepository
+import com.chinmay.mvvmexample.util.ApiException
 import com.chinmay.mvvmexample.util.Coroutines
 
 /**
@@ -12,6 +13,7 @@ class AuthViewModel : ViewModel() {
 
     var email: String? = null
     var password: String? = null
+
     var authListener: AuthListener? = null
 
     fun onLoginButtonClick(view: View) {
@@ -22,11 +24,15 @@ class AuthViewModel : ViewModel() {
         }
 
         Coroutines.main {
-            val response = UserRepository().userLogin(email!!, password!!)
-            if (response.isSuccessful) {
-                authListener?.onSuccess(response.body()?.user!!)
-            } else {
-                authListener?.onFailure("Error Code: ${response.code()} ")
+            try {
+                val authResponse = UserRepository().userLogin(email!!, password!!)
+                authResponse.user?.let {
+                    authListener?.onSuccess(it)
+                    return@main
+                }
+                authListener?.onFailure(authResponse.message!!)
+            } catch (e: ApiException) {
+                authListener?.onFailure(e.message!!)
             }
         }
     }
